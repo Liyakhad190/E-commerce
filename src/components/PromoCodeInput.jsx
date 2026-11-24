@@ -25,7 +25,10 @@ export default function PromoCodeInput() {
 
   const handleQuickApply = (couponCode) => {
     setErrorMsg('');
-    applyPromoCode(couponCode);
+    const result = applyPromoCode(couponCode);
+    if (!result.success) {
+      setErrorMsg(result.message);
+    }
   };
 
   return (

@@ -13,21 +13,21 @@ export const PROMO_CODES = {
     type: 'percentage',
     value: 10,
     description: '10% off on your entire grocery basket',
-    minSubtotal: 300,
+    minSubtotal: 0,
   },
   FREEDEL: {
     code: 'FREEDEL',
     type: 'delivery',
     value: 100,
     description: 'Free doorstep priority delivery',
-    minSubtotal: 250,
+    minSubtotal: 0,
   },
   VEG50: {
     code: 'VEG50',
     type: 'flat',
     value: 50,
-    description: 'Flat ₹50 discount on orders above ₹500',
-    minSubtotal: 500,
+    description: 'Flat ₹50 discount on orders above ₹150',
+    minSubtotal: 150,
   },
 };
 

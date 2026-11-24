@@ -1,5 +1,5 @@
-import React, { useState, useMemo, useRef } from 'react';
-import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
+import React, { useState, useMemo, useRef, useEffect } from 'react';
+import { Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
 import { Box, Container, Typography, Chip, Button, Drawer, IconButton } from '@mui/material';
 import { X, SlidersHorizontal } from 'lucide-react';
 
@@ -361,6 +361,23 @@ function HomePage({ cartDrawerOpen, setCartDrawerOpen, checkoutModalOpen, setChe
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// SCROLL TO TOP ON ROUTE CHANGE
+// ─────────────────────────────────────────────────────────────────────────────
+function ScrollToTop() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'instant', // instant scroll to top so details page doesn't start at bottom/footer
+    });
+  }, [pathname]);
+
+  return null;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // ROOT APP
 // ─────────────────────────────────────────────────────────────────────────────
 export default function App() {
@@ -368,51 +385,54 @@ export default function App() {
   const [checkoutModalOpen, setCheckoutModalOpen] = useState(false);
 
   return (
-    <Routes>
-      {/* Home */}
-      <Route
-        path="/"
-        element={
-          <HomePage
-            cartDrawerOpen={cartDrawerOpen}
-            setCartDrawerOpen={setCartDrawerOpen}
-            checkoutModalOpen={checkoutModalOpen}
-            setCheckoutModalOpen={setCheckoutModalOpen}
-          />
-        }
-      />
+    <>
+      <ScrollToTop />
+      <Routes>
+        {/* Home */}
+        <Route
+          path="/"
+          element={
+            <HomePage
+              cartDrawerOpen={cartDrawerOpen}
+              setCartDrawerOpen={setCartDrawerOpen}
+              checkoutModalOpen={checkoutModalOpen}
+              setCheckoutModalOpen={setCheckoutModalOpen}
+            />
+          }
+        />
 
-      {/* Category listing */}
-      <Route
-        path="/category/:slug"
-        element={
-          <CategoryListingPage
-            cartDrawerOpen={cartDrawerOpen}
-            setCartDrawerOpen={setCartDrawerOpen}
-            checkoutModalOpen={checkoutModalOpen}
-            setCheckoutModalOpen={setCheckoutModalOpen}
-          />
-        }
-      />
+        {/* Category listing */}
+        <Route
+          path="/category/:slug"
+          element={
+            <CategoryListingPage
+              cartDrawerOpen={cartDrawerOpen}
+              setCartDrawerOpen={setCartDrawerOpen}
+              checkoutModalOpen={checkoutModalOpen}
+              setCheckoutModalOpen={setCheckoutModalOpen}
+            />
+          }
+        />
 
-      {/* Product details */}
-      <Route
-        path="/product/:productId"
-        element={
-          <ProductDetailsPage
-            cartDrawerOpen={cartDrawerOpen}
-            setCartDrawerOpen={setCartDrawerOpen}
-            checkoutModalOpen={checkoutModalOpen}
-            setCheckoutModalOpen={setCheckoutModalOpen}
-          />
-        }
-      />
+        {/* Product details */}
+        <Route
+          path="/product/:productId"
+          element={
+            <ProductDetailsPage
+              cartDrawerOpen={cartDrawerOpen}
+              setCartDrawerOpen={setCartDrawerOpen}
+              checkoutModalOpen={checkoutModalOpen}
+              setCheckoutModalOpen={setCheckoutModalOpen}
+            />
+          }
+        />
 
-      {/* Dedicated 404 */}
-      <Route path="/404" element={<NotFoundPage />} />
+        {/* Dedicated 404 */}
+        <Route path="/404" element={<NotFoundPage />} />
 
-      {/* Catch-all → 404 */}
-      <Route path="*" element={<Navigate to="/404" replace />} />
-    </Routes>
+        {/* Catch-all → 404 */}
+        <Route path="*" element={<Navigate to="/404" replace />} />
+      </Routes>
+    </>
   );
 }
