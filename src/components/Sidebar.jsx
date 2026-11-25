@@ -240,7 +240,7 @@ export default function Sidebar({
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
           <Truck size={17} color="#F03A2A" />
           <Typography variant="caption" sx={{ fontWeight: 800, color: '#1B3350' }}>
-            Free Delivery above ₹500
+            Free Delivery above ₹100
           </Typography>
         </Box>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>

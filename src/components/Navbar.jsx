@@ -10,13 +10,20 @@ import {
   Drawer,
   Button,
 } from '@mui/material';
-import { ShoppingBag, Heart, X, Trash2 } from 'lucide-react';
+import { ShoppingBag, Heart, X, Trash2, Home } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import SearchBar from './SearchBar';
 import { useCart } from '../context/CartContext';
 
 export default function Navbar({ onOpenCart, searchTerm, onSearchChange }) {
+  const navigate = useNavigate();
   const { totalCount, wishlist, toggleWishlist, addToCart } = useCart();
   const [wishlistDrawerOpen, setWishlistDrawerOpen] = useState(false);
+
+  const handleGoHome = () => {
+    navigate('/');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   return (
     <>
@@ -56,7 +63,7 @@ export default function Navbar({ onOpenCart, searchTerm, onSearchChange }) {
                 transition: 'opacity 0.2s ease',
                 '&:hover': { opacity: 0.92 },
               }}
-              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              onClick={handleGoHome}
             >
               <Box
                 sx={{
@@ -116,8 +123,34 @@ export default function Navbar({ onOpenCart, searchTerm, onSearchChange }) {
               <SearchBar searchTerm={searchTerm} onSearchChange={onSearchChange} />
             </Box>
 
-            {/* Right Actions: Wishlist + Cart */}
+            {/* Right Actions: Home + Wishlist + Cart */}
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.2, flexShrink: 0 }}>
+              {/* Home Button */}
+              <Button
+                onClick={handleGoHome}
+                startIcon={<Home size={18} />}
+                sx={{
+                  color: '#F0E8D8',
+                  backgroundColor: 'rgba(240, 232, 216, 0.1)',
+                  border: '1px solid rgba(240, 232, 216, 0.18)',
+                  height: 44,
+                  px: { xs: 1.5, sm: 2 },
+                  borderRadius: '12px',
+                  fontWeight: 700,
+                  fontSize: '0.88rem',
+                  textTransform: 'none',
+                  transition: 'all 0.2s ease',
+                  '&:hover': {
+                    backgroundColor: 'rgba(240, 58, 42, 0.2)',
+                    borderColor: '#F03A2A',
+                    color: '#FFFFFF',
+                    transform: 'translateY(-2px)',
+                  },
+                }}
+              >
+                Home
+              </Button>
+
               {/* Wishlist Button */}
               <IconButton
                 onClick={() => setWishlistDrawerOpen(true)}

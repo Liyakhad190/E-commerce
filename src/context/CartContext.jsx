@@ -3,7 +3,7 @@ import { PROMO_CODES, GROCERY_ITEMS } from '../data/groceries';
 
 const CartContext = createContext();
 
-export const FREE_DELIVERY_THRESHOLD = 500;
+export const FREE_DELIVERY_THRESHOLD = 100;
 export const STANDARD_DELIVERY_FEE = 49;
 export const TAX_RATE = 0.05; // 5% GST
 
