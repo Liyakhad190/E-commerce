@@ -9,8 +9,11 @@ import {
   Badge,
   Drawer,
   Button,
+  Menu,
+  MenuItem,
+  Tooltip,
 } from '@mui/material';
-import { ShoppingBag, Heart, X, Trash2, Home } from 'lucide-react';
+import { ShoppingBag, Heart, X, Trash2, Home, Bell, Sparkles, Tag, CheckCircle2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import SearchBar from './SearchBar';
 import { useCart } from '../context/CartContext';
@@ -19,6 +22,34 @@ export default function Navbar({ onOpenCart, searchTerm, onSearchChange }) {
   const navigate = useNavigate();
   const { totalCount, wishlist, toggleWishlist, addToCart } = useCart();
   const [wishlistDrawerOpen, setWishlistDrawerOpen] = useState(false);
+  const [notificationAnchor, setNotificationAnchor] = useState(null);
+
+  const notifications = [
+    {
+      id: 1,
+      title: 'Free Delivery Threshold Lowered!',
+      description: 'Get free doorstep delivery on all orders above ₹100 now.',
+      time: 'Just now',
+      icon: CheckCircle2,
+      color: '#10B981',
+    },
+    {
+      id: 2,
+      title: 'Use Coupon VEG50',
+      description: 'Flat ₹50 OFF on orders above ₹150. Use code VEG50 at checkout.',
+      time: '2 hours ago',
+      icon: Tag,
+      color: '#F03A2A',
+    },
+    {
+      id: 3,
+      title: 'Fresh Harvest of the Day',
+      description: 'Authentic Ratnagiri Alphonso mangoes and A2 Gir cow milk are in stock.',
+      time: 'Today',
+      icon: Sparkles,
+      color: '#1B3350',
+    },
+  ];
 
   const handleGoHome = () => {
     navigate('/');
@@ -123,33 +154,69 @@ export default function Navbar({ onOpenCart, searchTerm, onSearchChange }) {
               <SearchBar searchTerm={searchTerm} onSearchChange={onSearchChange} />
             </Box>
 
-            {/* Right Actions: Home + Wishlist + Cart */}
+            {/* Right Actions: Home Icon + Notification Bell + Wishlist + Cart */}
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.2, flexShrink: 0 }}>
-              {/* Home Button */}
-              <Button
-                onClick={handleGoHome}
-                startIcon={<Home size={18} />}
-                sx={{
-                  color: '#F0E8D8',
-                  backgroundColor: 'rgba(240, 232, 216, 0.1)',
-                  border: '1px solid rgba(240, 232, 216, 0.18)',
-                  height: 44,
-                  px: { xs: 1.5, sm: 2 },
-                  borderRadius: '12px',
-                  fontWeight: 700,
-                  fontSize: '0.88rem',
-                  textTransform: 'none',
-                  transition: 'all 0.2s ease',
-                  '&:hover': {
-                    backgroundColor: 'rgba(240, 58, 42, 0.2)',
-                    borderColor: '#F03A2A',
-                    color: '#FFFFFF',
-                    transform: 'translateY(-2px)',
-                  },
-                }}
-              >
-                Home
-              </Button>
+              {/* Home Icon Button (No Text) */}
+              <Tooltip title="Home">
+                <IconButton
+                  onClick={handleGoHome}
+                  aria-label="Go to homepage"
+                  sx={{
+                    color: '#F0E8D8',
+                    backgroundColor: 'rgba(240, 232, 216, 0.1)',
+                    border: '1px solid rgba(240, 232, 216, 0.18)',
+                    width: 44,
+                    height: 44,
+                    borderRadius: '12px',
+                    transition: 'all 0.2s ease',
+                    '&:hover': {
+                      backgroundColor: 'rgba(240, 58, 42, 0.2)',
+                      borderColor: '#F03A2A',
+                      color: '#FFFFFF',
+                      transform: 'translateY(-2px)',
+                    },
+                  }}
+                >
+                  <Home size={20} />
+                </IconButton>
+              </Tooltip>
+
+              {/* Notification Bell Button */}
+              <Tooltip title="Notifications">
+                <IconButton
+                  onClick={(e) => setNotificationAnchor(e.currentTarget)}
+                  aria-label="View notifications"
+                  sx={{
+                    color: '#F0E8D8',
+                    backgroundColor: 'rgba(240, 232, 216, 0.1)',
+                    border: '1px solid rgba(240, 232, 216, 0.18)',
+                    width: 44,
+                    height: 44,
+                    borderRadius: '12px',
+                    transition: 'all 0.2s ease',
+                    '&:hover': {
+                      backgroundColor: 'rgba(240, 58, 42, 0.2)',
+                      borderColor: '#F03A2A',
+                      color: '#FFFFFF',
+                      transform: 'translateY(-2px)',
+                    },
+                  }}
+                >
+                  <Badge
+                    badgeContent={notifications.length}
+                    sx={{
+                      '& .MuiBadge-badge': {
+                        backgroundColor: '#F03A2A',
+                        color: '#FFFFFF',
+                        fontWeight: 800,
+                        fontSize: '0.7rem',
+                      },
+                    }}
+                  >
+                    <Bell size={20} />
+                  </Badge>
+                </IconButton>
+              </Tooltip>
 
               {/* Wishlist Button */}
               <IconButton
@@ -225,6 +292,90 @@ export default function Navbar({ onOpenCart, searchTerm, onSearchChange }) {
           </Toolbar>
         </Container>
       </AppBar>
+
+      {/* Notifications Popover Menu */}
+      <Menu
+        anchorEl={notificationAnchor}
+        open={Boolean(notificationAnchor)}
+        onClose={() => setNotificationAnchor(null)}
+        slotProps={{
+          paper: {
+            sx: {
+              mt: 1.5,
+              width: 340,
+              maxWidth: '90vw',
+              borderRadius: '16px',
+              backgroundColor: '#FDFBF7',
+              border: '1px solid rgba(27, 51, 80, 0.14)',
+              boxShadow: '0 12px 36px rgba(27, 51, 80, 0.2)',
+              p: 1.5,
+            },
+          },
+        }}
+      >
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', px: 1, pb: 1, mb: 1, borderBottom: '1px solid rgba(27, 51, 80, 0.1)' }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <Bell size={18} color="#F03A2A" />
+            <Typography variant="subtitle2" sx={{ fontWeight: 800, color: '#1B3350' }}>
+              Notifications
+            </Typography>
+          </Box>
+          <Typography variant="caption" sx={{ color: 'text.secondary', fontWeight: 700 }}>
+            {notifications.length} New
+          </Typography>
+        </Box>
+
+        {notifications.map((notif) => {
+          const IconComp = notif.icon;
+          return (
+            <MenuItem
+              key={notif.id}
+              onClick={() => setNotificationAnchor(null)}
+              sx={{
+                borderRadius: '12px',
+                py: 1.2,
+                px: 1,
+                mb: 0.8,
+                display: 'flex',
+                alignItems: 'flex-start',
+                gap: 1.5,
+                whiteSpace: 'normal',
+                '&:hover': {
+                  backgroundColor: 'rgba(240, 58, 42, 0.08)',
+                },
+              }}
+            >
+              <Box
+                sx={{
+                  width: 34,
+                  height: 34,
+                  borderRadius: '10px',
+                  backgroundColor: 'rgba(240, 232, 216, 0.8)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexShrink: 0,
+                  mt: 0.2,
+                  color: notif.color,
+                }}
+              >
+                <IconComp size={18} />
+              </Box>
+              <Box sx={{ flex: 1, minWidth: 0 }}>
+                <Typography variant="body2" sx={{ fontWeight: 800, color: '#1B3350', lineHeight: 1.25 }}>
+                  {notif.title}
+                </Typography>
+                <Typography variant="caption" sx={{ color: 'text.secondary', display: 'block', mt: 0.3, lineHeight: 1.35 }}>
+                  {notif.description}
+                </Typography>
+                <Typography variant="caption" sx={{ color: '#F03A2A', fontWeight: 700, fontSize: '0.68rem', mt: 0.3, display: 'block' }}>
+                  {notif.time}
+                </Typography>
+              </Box>
+            </MenuItem>
+          );
+        })}
+      </Menu>
 
       {/* Wishlist Drawer */}
       <Drawer
